@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gridline | Web Design for Local Business</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#0B1120',
+                            cyan: '#06B6D4',
+                            dark: '#111827',
+                            gray: '#1F2937'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Custom Logo Grid */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            padding: 4px;
+            border: 1.5px solid #06B6D4;
+            border-radius: 6px;
+            position: relative;
+            background-color: transparent;
+        }
+        .logo-grid div {
+            width: 5px;
+            height: 5px;
+            background-color: #06B6D4;
+            border-radius: 1px;
+        }
+        .logo-dot {
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: #06B6D4;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #06B6D4;
+        }
+
+        /* Subtle background glow */
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(11, 17, 32, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Gradient text */
+        .text-gradient {
+            background: linear-gradient(to right, #06B6D4, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-brand-navy text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-brand-cyan selection:text-brand-navy">
+
+    <!-- Ambient Glow Background -->
+    <div class="glow top-[-100px] left-[-100px]"></div>
+    <div class="glow bottom-[-100px] right-[-100px]"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 glass border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="logo-grid">
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div class="logo-dot"></div>
+                </div>
+                <span class="text-2xl font-display font-bold text-white tracking-tight">Gridline</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium">
+                <a href="#work" class="hover:text-brand-cyan transition-colors">Work</a>
+                <a href="#process" class="hover:text-brand-cyan transition-colors">Process</a>
+                <a href="#pricing" class="hover:text-brand-cyan transition-colors">Pricing</a>
+            </div>
+            <a href="mailto:gridlineoffical@gmail.com" class="bg-brand-cyan text-brand-navy font-bold px-6 py-2 rounded-full hover:bg-white transition-all duration-300 transform hover:scale-105 text-sm">Start a Project</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6 text-center z-10">
+            <div class="inline-block mb-4 px-4 py-1.5 rounded-full glass text-brand-cyan text-sm font-semibold border-brand-cyan/30">
+                ✦ Now booking local businesses for Q3
+            </div>
+            <h1 class="text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
+                We build websites that make local businesses <span class="text-gradient">money.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto font-light">
+                Gridline designs high-converting, mobile-first websites. We help service businesses stop losing customers to outdated, slow designs.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="mailto:gridlineoffical@gmail.com" class="bg-brand-cyan text-brand-navy font-bold px-8 py-4 rounded-xl hover:bg-white transition-all duration-300 transform hover:scale-105 text-lg shadow-[0_0_20px_rgba(6,182,212,0.3)]">Request a Free Mockup</a>
+                <a href="#work" class="glass text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-all duration-300 text-lg border border-white/10">View Our Work</a>
+            </div>
+            
+            <!-- Trust Indicators -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-500 font-medium reveal">
+                <div>⚡ 100/100 PageSpeed</div>
+                <div>📱 100% Mobile-First</div>
+                <div>🔒 SSL Secured</div>
+                <div>📈 Built to Convert</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Work / Portfolio Section -->
+    <section id="work" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white mb-4">Recent Case Studies</h2>
+                <p class="text-gray-400 text-lg">Real designs built to solve real local business problems.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-10">
+                
+                <!-- Project 1: Plumber -->
+                <div class="group glass rounded-2xl overflow-hidden hover:border-brand-cyan/50 transition-all duration-500 reveal">
+                    <!-- Browser Chrome -->
+                    <div class="bg-[#0B1120] px-4 py-3 flex items-center gap-2 border-b border-white/5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        <div class="ml-4 bg-white/5 px-4 py-1 rounded text-xs text-gray-400 w-full max-w-sm truncate text-center font-mono">apex-plumbing.gridline.dev</div>
+                    </div>
+                    <!-- Preview -->
+                    <div class="h-80 bg-gradient-to-br from-[#0B1120] to-[#1F2937] relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+                        <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-[url('https://images.unsplash.com/photo-1585704032915-c3400ca199e7?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay"></div>
+                        <div class="relative z-10 transform group-hover:scale-105 transition-transform duration-500">
+                            <h3 class="text-3xl font-display font-bold text-white mb-2">Apex Plumbing</h3>
+                            <p class="text-brand-cyan font-medium mb-6">24/7 Emergency Service</p>
+                            <div class="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-bold shadow-lg shadow-orange-500/30">Call Now: (555) 123-4567</div>
+                        </div>
+                    </div>
+                    <!-- Details -->
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white">Apex Plumbing</h4>
+                                <p class="text-gray-400 text-sm mt-1">Local Service / Emergency Repairs</p>
+                            </div>
+                            <span class="text-xs font-bold bg-brand-cyan/10 text-brand-cyan px-3 py-1 rounded-full border border-brand-cyan/20">+214% Calls</span>
+                        </div>
+                        <p class="text-gray-400 mb-6 text-sm leading-relaxed">A high-urgency, mobile-first design focused entirely on click-to-call functionality and local SEO dominance.</p>
+                        <a href="#" class="inline-flex items-center text-sm font-bold text-brand-cyan hover:text-white transition-colors group-hover:underline">
+                            View Live Site <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Dentist -->
+                <div class="group glass rounded-2xl overflow-hidden hover:border-brand-cyan/50 transition-all duration-500 reveal">
+                    <!-- Browser Chrome -->
+                    <div class="bg-[#0B1120] px-4 py-3 flex items-center gap-2 border-b border-white/5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        <div class="ml-4 bg-white/5 px-4 py-1 rounded text-xs text-gray-400 w-full max-w-sm truncate text-center font-mono">bright-smile.gridline.dev</div>
+                    </div>
+                    <!-- Preview -->
+                    <div class="h-80 bg-gradient-to-br from-[#0B1120] to-[#1F2937] relative overflow-hidden flex flex-col items-center justify-center p-8 text-center">
+                         <div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-[url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay"></div>
+                        <div class="relative z-10 transform group-hover:scale-105 transition-transform duration-500">
+                            <h3 class="text-3xl font-display font-bold text-white mb-2">Bright Smile Dental</h3>
+                            <p class="text-teal-200 font-medium mb-6">Modern Family Dentistry</p>
+                            <div class="inline-block bg-teal-500 text-white px-6 py-3 rounded-lg font-bold shadow-lg shadow-teal-500/30">Book Appointment</div>
+                        </div>
+                    </div>
+                    <!-- Details -->
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold text-white">Bright Smile Dental</h4>
+                                <p class="text-gray-400 text-sm mt-1">Healthcare / Patient Acquisition</p>
+                            </div>
+                            <span class="text-xs font-bold bg-brand-cyan/10 text-brand-cyan px-3 py-1 rounded-full border border-brand-cyan/20">+180% Bookings</span>
+                        </div>
+                        <p class="text-gray-400 mb-6 text-sm leading-relaxed">A clean, trust-building layout with an integrated booking system that reduced phone-call friction.</p>
+                        <a href="#" class="inline-flex items-center text-sm font-bold text-brand-cyan hover:text-white transition-colors group-hover:underline">
+                            View Live Site <span class="ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-32 relative bg-white/[0.02] border-y border-white/5">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white mb-4">How It Works</h2>
+                <p class="text-gray-400 text-lg">No jargon. No endless meetings. Just results.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="glass p-8 rounded-2xl relative reveal">
+                    <div class="text-5xl font-display font-bold text-brand-cyan/20 absolute top-4 right-6">01</div>
+                    <h3 class="text-xl font-bold text-white mb-3 mt-4">We Build a Mockup</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">We don't charge to pitch. We look at your current site (or lack thereof) and build a free, custom mockup to show you exactly what you're missing.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="glass p-8 rounded-2xl relative reveal">
+                    <div class="text-5xl font-display font-bold text-brand-cyan/20 absolute top-4 right-6">02</div>
+                    <h3 class="text-xl font-bold text-white mb-3 mt-4">You Approve It</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">If you love it, we lock in a flat fee. You provide your logo, images, and content. We handle all the technical hosting and domain setup.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="glass p-8 rounded-2xl relative reveal">
+                    <div class="text-5xl font-display font-bold text-brand-cyan/20 absolute top-4 right-6">03</div>
+                    <h3 class="text-xl font-bold text-white mb-3 mt-4">You Get Customers</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Your new site goes live in under a week. It loads instantly, looks perfect on phones, and is engineered to turn visitors into paying customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA / Footer -->
+    <footer class="py-20 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-6">Ready to stop losing customers?</h2>
+            <p class="text-gray-400 mb-10 text-lg">Let's build something that actually works for your business.</p>
+            <a href="mailto:gridlineoffical@gmail.com" class="inline-block bg-brand-cyan text-brand-navy font-bold px-10 py-5 rounded-xl hover:bg-white transition-all duration-300 transform hover:scale-105 text-xl shadow-[0_0_30px_rgba(6,182,212,0.4)]">Get Your Free Mockup</a>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <div class="flex items-center gap-2">
+                <div class="logo-grid scale-75">
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                    <div class="logo-dot"></div>
+                </div>
+                <span class="font-display font-bold text-white">Gridline</span>
+            </div>
+            <p>&copy; 2024 Gridline Web Design. All rights reserved.</p>
+            <a href="mailto:gridlineoffical@gmail.com" class="hover:text-brand-cyan transition-colors">gridlineoffical@gmail.com</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Scroll Animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+                
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add('active');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger on load
+        });
+    </script>
+</body>
+</html>
