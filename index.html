@@ -3,225 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gridline | Premium Web Design</title>
-    <meta name="description" content="Gridline engineers high-converting, premium websites for local service businesses. We don't just make things pretty—we make them profitable.">
+    <title>Gridline | Elite Web Design</title>
+    <meta name="description" content="Gridline engineers high-converting, premium websites for local service businesses.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Animation Libraries (GSAP & Vanilla Tilt) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
     <style>
         /* CSS RESET & VARIABLES */
         :root {
-            --bg: #050505;
-            --surface: #0E0E11;
-            --surface-light: #1A1A20;
-            --text-main: #FFFFFF;
-            --text-muted: #A1A1AA;
+            --bg: #000000;
+            --surface: #0a0a0c;
+            --text: #f8fafc;
+            --text-muted: #71717a;
             --accent: #06B6D4;
-            --border: rgba(255, 255, 255, 0.08);
+            --font-display: 'Syne', sans-serif;
             --font-body: 'Inter', sans-serif;
-            --font-display: 'Space Grotesk', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
         
         body {
             background-color: var(--bg);
-            color: var(--text-main);
+            color: var(--text);
             font-family: var(--font-body);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            cursor: none; /* Custom Cursor */
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center top;
+            cursor: none;
+            background-image: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
         }
 
-        a, button, input, textarea { cursor: none; }
-        h1, h2, h3 { font-family: var(--font-display); line-height: 1.1; letter-spacing: -0.04em; }
+        a, button { cursor: none; }
+        h1, h2, h3 { font-family: var(--font-display); text-transform: uppercase; line-height: 0.95; letter-spacing: -0.02em; }
         a { text-decoration: none; color: inherit; }
+        ::selection { background: var(--accent); color: #000; }
 
-        ::selection { background: var(--accent); color: var(--bg); }
-
-        /* PREMIUM CUSTOM CURSOR */
-        .cursor-dot {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-            background-color: var(--accent); border-radius: 50%;
-            z-index: 9999; pointer-events: none; transform: translate(-50%, -50%);
+        /* THE MOUSE GLOW (Follows cursor) */
+        #mouse-glow {
+            position: fixed; top: 0; left: 0; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 50%);
+            border-radius: 50%; pointer-events: none; z-index: 0;
+            transform: translate(-50%, -50%); transition: opacity 0.3s;
         }
-        .cursor-outline {
-            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
-            border: 1px solid rgba(6, 182, 212, 0.5); border-radius: 50%;
-            z-index: 9999; pointer-events: none; transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s, background-color 0.3s;
+
+        /* CUSTOM CURSOR */
+        .cursor {
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+            background: var(--accent); border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
             mix-blend-mode: difference;
         }
-        .cursor-outline.hovering {
-            width: 80px; height: 80px; background-color: rgba(6, 182, 212, 0.2); border-color: transparent;
+
+        /* NOISE OVERLAY (For premium texture) */
+        .noise {
+            position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.05;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
         }
 
-        /* LAYOUT & UTILITIES */
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+        /* LAYOUT */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 10; }
         
-        /* SCROLL REVEAL ANIMATION */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* SPA PAGE ROUTING */
-        .page { display: none; animation: fadeIn 0.5s ease forwards; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; filter: blur(5px); } to { opacity: 1; filter: blur(0); } }
-
         /* NAVIGATION */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            transition: transform 0.3s;
+            padding: 30px 0; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
-        nav .container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
         
-        /* LOGO */
-        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.05em; }
-        .logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding: 5px; border: 2px solid var(--text-main); border-radius: 6px; position: relative; background: transparent; }
-        .logo-grid div { width: 6px; height: 6px; background: var(--text-main); border-radius: 1px; }
-        .logo-dot { position: absolute; right: -6px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 15px var(--accent); }
+        .logo { display: flex; align-items: center; gap: 16px; font-family: var(--font-display); font-size: 28px; font-weight: 800; }
+        .logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 6px; border: 2px solid var(--text); border-radius: 8px; position: relative; }
+        .logo-grid div { width: 8px; height: 8px; background: var(--text); }
+        .logo-dot { position: absolute; right: -8px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); }
 
-        .nav-links { display: flex; gap: 32px; align-items: center; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
-        .nav-links a { position: relative; transition: color 0.3s; color: var(--text-muted); }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-
-        /* BUTTONS */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            background: var(--text-main); color: var(--bg); padding: 16px 32px;
-            font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em;
-            border: 1px solid var(--text-main); border-radius: 4px; transition: all 0.3s;
-        }
-        .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); box-shadow: 0 0 30px rgba(6, 182, 212, 0.3); transform: translateY(-2px); }
-        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; }
+        .nav-links { display: flex; gap: 40px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-links a:hover { color: var(--accent); }
+        .btn-nav { border: 1px solid var(--text); padding: 12px 24px; border-radius: 50px; transition: 0.3s; }
+        .btn-nav:hover { background: var(--text); color: var(--bg) !important; }
 
         /* HERO SECTION */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 80px; position: relative; }
-        .hero::before { content: ''; position: absolute; top: 30%; left: 20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 60%); filter: blur(80px); z-index: -1; pointer-events: none; }
-        .hero-tag { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; color: var(--accent); background: var(--surface); }
-        .hero-tag span { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
-        .hero h1 { font-size: clamp(3.5rem, 10vw, 8rem); font-weight: 700; margin-bottom: 24px; }
-        .hero p { font-size: clamp(1.1rem, 2vw, 1.3rem); max-width: 650px; color: var(--text-muted); margin-bottom: 48px; }
-        .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+        .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 100px; }
+        .hero h1 { font-size: clamp(4rem, 12vw, 10rem); margin-bottom: 20px; }
+        .hero h1 span { color: var(--accent); -webkit-text-stroke: 2px var(--accent); color: transparent; }
+        .hero p { font-size: clamp(1.2rem, 2vw, 1.5rem); color: var(--text-muted); max-width: 600px; margin-bottom: 40px; font-weight: 500; }
+        
+        .magnetic-btn {
+            display: inline-block; background: var(--text); color: var(--bg);
+            padding: 20px 40px; font-size: 16px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; border-radius: 4px; transition: transform 0.2s;
+        }
 
-        /* KINETIC MARQUEE */
-        .marquee-container { overflow: hidden; white-space: nowrap; padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); display: flex; }
-        .marquee { display: flex; animation: marquee 30s linear infinite; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        /* SCROLLING MARQUEE */
+        .marquee-wrapper { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); overflow: hidden; display: flex; }
+        .marquee { display: flex; white-space: nowrap; animation: scroll 20s linear infinite; font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
         .marquee span { margin: 0 40px; display: flex; align-items: center; gap: 40px; }
-        .marquee span::after { content: '✦'; color: var(--accent); font-size: 1.2rem; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee span::after { content: '✦'; -webkit-text-stroke: 0; color: var(--accent); font-size: 2rem; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* SERVICES / BENTO GRID */
-        .section { padding: 120px 0; }
-        .section-title { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 60px; }
+        /* 3D WORK CARDS */
+        .work-section { padding: 150px 0; }
+        .section-title { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 80px; text-align: center; }
         
-        .bento-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
-        .bento-card { 
-            background: linear-gradient(145deg, var(--surface), var(--bg)); 
-            border: 1px solid var(--border); border-radius: 16px; padding: 40px; 
-            transition: border-color 0.4s, transform 0.4s; position: relative; overflow: hidden;
+        .work-grid { display: grid; grid-template-columns: 1fr; gap: 50px; perspective: 1000px; }
+        .card-3d {
+            background: var(--surface); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            overflow: hidden; transform-style: preserve-3d; transform: perspective(1000px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
-        .bento-card:hover { border-color: rgba(6, 182, 212, 0.5); transform: translateY(-5px); }
-        .bento-icon { font-size: 2.5rem; margin-bottom: 24px; }
-        .bento-card h3 { font-size: 1.8rem; margin-bottom: 16px; }
-        .bento-card p { color: var(--text-muted); font-size: 1.05rem; }
-
-        /* WORK SECTION (BROWSER MOCKUPS) */
-        .work-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
-        .work-card { 
-            background: var(--surface); border: 1px solid var(--border); border-radius: 12px; 
-            overflow: hidden; transition: transform 0.4s, box-shadow 0.4s; 
-        }
-        .work-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); border-color: rgba(6, 182, 212, 0.3); }
+        .card-3d:hover { border-color: rgba(6,182,212,0.5); }
         
-        /* Fake Browser Chrome */
-        .browser-bar { background: #16161A; padding: 12px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
-        .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .browser-dot.red { background: #FF5F56; }
-        .browser-dot.yellow { background: #FFBD2E; }
-        .browser-dot.green { background: #27C93F; }
-        .browser-url { background: #0E0E11; color: var(--text-muted); font-size: 12px; padding: 4px 16px; border-radius: 4px; margin-left: 12px; flex: 1; text-align: center; font-family: monospace; }
+        .browser-bar { background: rgba(255,255,255,0.05); padding: 16px; display: flex; gap: 8px; align-items: center; transform: translateZ(30px); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
         
-        .work-image { height: 350px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background-size: cover; background-position: center; }
-        .work-image.plumbing { background: linear-gradient(135deg, #0F172A, #1E3A8A); }
-        .work-image.dental { background: linear-gradient(135deg, #0F172A, #0F766E); }
-        .work-image::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); transition: background 0.3s; }
-        .work-card:hover .work-image::before { background: rgba(0,0,0,0); }
-        .work-image h3 { font-size: 2.5rem; color: white; z-index: 1; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .card-img { height: 400px; background-size: cover; background-position: center; position: relative; transform: translateZ(20px); }
+        .card-img.plumbing { background: linear-gradient(135deg, #0F172A, #1E3A8A); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-family: var(--font-display); font-weight: 800; }
+        .card-img.dental { background: linear-gradient(135deg, #0F172A, #0F766E); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-family: var(--font-display); font-weight: 800; }
         
-        .work-details { padding: 32px; }
-        .work-meta { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.05em; }
-        .work-stat { background: rgba(6, 182, 212, 0.1); padding: 4px 12px; border-radius: 50px; border: 1px solid rgba(6, 182, 212, 0.3); }
-        .work-details h4 { font-size: 1.5rem; margin-bottom: 12px; }
-        .work-details p { color: var(--text-muted); }
+        .card-info { padding: 40px; transform: translateZ(40px); }
+        .card-info h3 { font-size: 2rem; margin-bottom: 16px; }
+        .card-info p { color: var(--text-muted); font-size: 1.1rem; }
+        .stat { display: inline-block; margin-top: 20px; padding: 8px 16px; border: 1px solid var(--accent); color: var(--accent); border-radius: 50px; font-weight: 700; font-size: 0.9rem; }
 
-        /* CONTACT FORM */
-        .contact-grid { display: grid; grid-template-columns: 1fr; gap: 60px; }
-        .form-group { margin-bottom: 24px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text-muted); letter-spacing: 0.05em; }
-        .form-group input, .form-group textarea { 
-            width: 100%; padding: 16px; background: var(--surface); border: 1px solid var(--border); 
-            color: white; border-radius: 8px; font-family: var(--font-body); font-size: 16px; transition: border-color 0.3s, box-shadow 0.3s; 
-        }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(6,182,212,0.1); }
+        /* FOOTER / CTA */
+        .cta { padding: 150px 0; text-align: center; background: linear-gradient(to top, rgba(6,182,212,0.1), transparent); }
+        .cta h2 { font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 40px; }
 
-        /* FOOTER */
-        footer { border-top: 1px solid var(--border); padding: 80px 0 40px; background: var(--bg); }
-        .footer-content { display: flex; flex-direction: column; gap: 40px; margin-bottom: 60px; }
-        .footer-content h2 { font-size: clamp(2.5rem, 6vw, 5rem); }
-        .footer-bottom { display: flex; flex-direction: column; gap: 20px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; }
-
-        /* MOBILE MENU */
-        .mobile-toggle { display: none; font-size: 28px; cursor: pointer; font-weight: bold; }
-        
-        @media (max-width: 768px) {
-            * { cursor: auto !important; }
-            .cursor-dot, .cursor-outline { display: none; }
-            .nav-links { display: none; }
-            .mobile-toggle { display: block; }
-            .nav-links.open { 
-                display: flex; flex-direction: column; position: absolute; top: 80px; left: 0; 
-                width: 100%; background: var(--surface); padding: 32px; border-bottom: 1px solid var(--border); 
-                box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            }
-            .hero h1 { font-size: 3.5rem; }
-            .footer-bottom { flex-direction: column; text-align: center; }
-        }
         @media (min-width: 768px) {
-            .bento-grid { grid-template-columns: 1fr 1fr; }
-            .bento-card:nth-child(3) { grid-column: span 2; }
             .work-grid { grid-template-columns: 1fr 1fr; }
-            .contact-grid { grid-template-columns: 1fr 1fr; }
-            .footer-content { flex-direction: row; justify-content: space-between; align-items: flex-end; }
-            .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
+    <!-- Cursor & Effects -->
+    <div class="cursor"></div>
+    <div id="mouse-glow"></div>
+    <div class="noise"></div>
 
     <!-- Navigation -->
-    <nav id="navbar">
+    <nav>
         <div class="container">
-            <a href="#" class="logo" onclick="navigate('home')">
+            <a href="#" class="logo">
                 <div class="logo-grid">
                     <div></div><div></div><div></div><div></div>
                     <div></div><div></div><div></div><div></div>
@@ -231,240 +159,149 @@
                 </div>
                 Gridline
             </a>
-            <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
-            <div class="nav-links" id="navLinks">
-                <a href="#" onclick="navigate('home')" data-nav="home" class="active">Home</a>
-                <a href="#" onclick="navigate('work')" data-nav="work">Work</a>
-                <a href="#" onclick="navigate('contact')" data-nav="contact">Contact</a>
-                <a href="#" onclick="navigate('contact')" class="btn" style="padding: 12px 24px; color: var(--bg);">Start a Project</a>
+            <div class="nav-links">
+                <a href="#work">Work</a>
+                <a href="#contact" class="btn-nav">Hire Us</a>
             </div>
         </div>
     </nav>
 
-    <!-- MAIN APP -->
-    <main>
+    <!-- Hero -->
+    <section class="hero container">
+        <div>
+            <h1 class="gsap-hero">WE BUILD<br><span>WEAPONS</span><br>OF MASS<br>CONVERSION.</h1>
+            <p class="gsap-hero">Gridline engineers elite digital experiences for local businesses. Stop losing customers to slow, ugly websites. Dominate your local market.</p>
+            <a href="#contact" class="magnetic-btn gsap-hero">Get Your Free Mockup</a>
+        </div>
+    </section>
 
-        <!-- PAGE: HOME -->
-        <section id="page-home" class="page active">
-            <div class="hero container">
-                <div class="reveal">
-                    <span class="hero-tag"><span></span> Premium Web Design Agency</span>
-                    <h1>We build<br>websites that<br><span style="color: var(--accent);">print money.</span></h1>
-                    <p>Gridline engineers high-converting digital experiences for local businesses. We don't just make things pretty—we make them profitable.</p>
-                    <div class="hero-btns">
-                        <a href="#" onclick="navigate('work')" class="btn">See the Work</a>
-                        <a href="#" onclick="navigate('contact')" class="btn btn-outline">Get a Free Mockup</a>
-                    </div>
+    <!-- Kinetic Marquee -->
+    <div class="marquee-wrapper">
+        <div class="marquee">
+            <span>HIGH CONVERSION</span>
+            <span>MOBILE FIRST</span>
+            <span>LIGHTNING FAST</span>
+            <span>HIGH CONVERSION</span>
+            <span>MOBILE FIRST</span>
+            <span>LIGHTNING FAST</span>
+        </div>
+    </div>
+
+    <!-- 3D Work Section -->
+    <section id="work" class="work-section container">
+        <h2 class="section-title gsap-reveal">The Proof.</h2>
+        
+        <div class="work-grid">
+            <!-- Card 1 -->
+            <div class="card-3d gsap-reveal" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="browser-bar">
+                    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                </div>
+                <div class="card-img plumbing">APEX PLUMBING</div>
+                <div class="card-info">
+                    <h3>Apex Plumbing</h3>
+                    <p>High-urgency design focused entirely on click-to-call functionality.</p>
+                    <div class="stat">+214% INBOUND CALLS</div>
                 </div>
             </div>
 
-            <!-- Marquee -->
-            <div class="marquee-container">
-                <div class="marquee">
-                    <span>HIGH CONVERSION</span>
-                    <span>MOBILE FIRST</span>
-                    <span>LIGHTNING FAST</span>
-                    <span>HIGH CONVERSION</span>
-                    <span>MOBILE FIRST</span>
-                    <span>LIGHTNING FAST</span>
-                    <span>HIGH CONVERSION</span>
-                    <span>MOBILE FIRST</span>
-                    <span>LIGHTNING FAST</span>
-                    <span>HIGH CONVERSION</span>
-                    <span>MOBILE FIRST</span>
-                    <span>LIGHTNING FAST</span>
+            <!-- Card 2 -->
+            <div class="card-3d gsap-reveal" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
+                <div class="browser-bar">
+                    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
                 </div>
-            </div>
-
-            <!-- Services / Value Prop -->
-            <div class="section container">
-                <h2 class="section-title reveal">Why Gridline?</h2>
-                <div class="bento-grid">
-                    <div class="bento-card reveal">
-                        <div class="bento-icon">⚡</div>
-                        <h3>Zero Risk. Free Mockups.</h3>
-                        <p>We build your mockup before you pay a dime. You only move forward if you love the design. No deposits, no contracts, no BS.</p>
-                    </div>
-                    <div class="bento-card reveal">
-                        <div class="bento-icon">📈</div>
-                        <h3>Built to Convert.</h3>
-                        <p>53% of mobile users leave if a site takes over 3 seconds to load. Our sites load instantly, keeping customers on your page and calling your phone.</p>
-                    </div>
-                    <div class="bento-card reveal">
-                        <div class="bento-icon">🔒</div>
-                        <h3>Managed Hosting & SEO.</h3>
-                        <p>We handle all the technical headaches. We secure your site, keep it updated, and optimize your local Google Maps presence so you dominate your area.</p>
-                    </div>
+                <div class="card-img dental">BRIGHT SMILE</div>
+                <div class="card-info">
+                    <h3>Bright Smile Dental</h3>
+                    <p>Trust-building layout with integrated booking to reduce friction.</p>
+                    <div class="stat">+180% BOOKINGS</div>
                 </div>
-            </div>
-        </section>
-
-        <!-- PAGE: WORK -->
-        <section id="page-work" class="page">
-            <div class="section container" style="padding-top: 160px;">
-                <h2 class="section-title reveal">Selected Work.</h2>
-                <div class="work-grid">
-                    
-                    <!-- Case Study 1 -->
-                    <div class="work-card reveal">
-                        <div class="browser-bar">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
-                            <div class="browser-url">apex-plumbing.gridline.dev</div>
-                        </div>
-                        <div class="work-image plumbing">
-                            <h3>Apex Plumbing</h3>
-                        </div>
-                        <div class="work-details">
-                            <div class="work-meta"><span>Local Service</span><span class="work-stat">+214% Calls</span></div>
-                            <h4>High-Urgency Mobile Design</h4>
-                            <p>A high-urgency, mobile-first design focused entirely on click-to-call functionality and local SEO dominance.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Case Study 2 -->
-                    <div class="work-card reveal">
-                        <div class="browser-bar">
-                            <div class="browser-dot red"></div>
-                            <div class="browser-dot yellow"></div>
-                            <div class="browser-dot green"></div>
-                            <div class="browser-url">bright-smile.gridline.dev</div>
-                        </div>
-                        <div class="work-image dental">
-                            <h3>Bright Smile</h3>
-                        </div>
-                        <div class="work-details">
-                            <div class="work-meta"><span>Healthcare</span><span class="work-stat">+180% Bookings</span></div>
-                            <h4>Trust-Focused Booking System</h4>
-                            <p>A clean, trust-building layout with an integrated booking system that reduced phone-call friction and increased new patients.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- PAGE: CONTACT -->
-        <section id="page-contact" class="page">
-            <div class="section container" style="padding-top: 160px;">
-                <h2 class="section-title reveal">Let's Talk.</h2>
-                <div class="contact-grid reveal">
-                    <div>
-                        <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 32px; max-width: 500px;">Send us a message and we'll get back to you with a free mockup concept for your business. No strings attached.</p>
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 8px; font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted);">Direct Email:</p>
-                        <a href="mailto:gridlineoffical@gmail.com" style="color: var(--accent); font-size: 1.5rem; font-weight: 700; text-decoration: none;">gridlineoffical@gmail.com</a>
-                    </div>
-                    
-                    <form action="mailto:gridlineoffical@gmail.com" method="post" enctype="text/plain" style="background: var(--surface); padding: 40px; border-radius: 16px; border: 1px solid var(--border);">
-                        <div class="form-group">
-                            <label>Business Name</label>
-                            <input type="text" name="Business" placeholder="e.g. Apex Plumbing" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Your Email</label>
-                            <input type="email" name="Email" placeholder="you@business.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>What do you need?</label>
-                            <textarea rows="4" name="Message" placeholder="Tell us about your current site..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn" style="width: 100%;">Send Message &rarr;</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container reveal">
-            <div class="footer-content">
-                <h2>Ready to upgrade<br>your business?</h2>
-                <a href="#" onclick="navigate('contact')" class="btn" style="background: var(--accent); border-color: var(--accent); color: var(--bg);">Start a Project</a>
-            </div>
-            <div class="footer-bottom">
-                <a href="#" onclick="navigate('home')" class="logo" style="color: white;">
-                    <div class="logo-grid" style="border-color: white;">
-                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
-                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
-                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
-                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
-                        <div class="logo-dot"></div>
-                    </div>
-                    Gridline
-                </a>
-                <p>&copy; 2024 Gridline. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- JAVASCRIPT -->
+    <!-- CTA -->
+    <section id="contact" class="cta container">
+        <h2 class="gsap-reveal">READY TO<br>UPGRADE?</h2>
+        <p class="gsap-reveal" style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 40px;">Send us a message. We'll build a free mockup of your new website.</p>
+        <a href="mailto:gridlineoffical@gmail.com" class="magnetic-btn gsap-reveal" style="background: var(--accent); color: #000;">Let's Talk &rarr;</a>
+        
+        <div style="margin-top: 80px; color: var(--text-muted); font-size: 14px;" class="gsap-reveal">
+            <p>gridlineoffical@gmail.com</p>
+            <p style="margin-top: 10px;">&copy; 2024 Gridline. All rights reserved.</p>
+        </div>
+    </section>
+
+    <!-- JavaScript: Mouse Tracking & 3D Animations -->
     <script>
-        // 1. PAGE ROUTING (SPA)
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            const target = document.getElementById('page-' + pageId);
-            if (target) target.classList.add('active');
+        // 1. CUSTOM MOUSE GLOW & CURSOR
+        const cursor = document.querySelector('.cursor');
+        const glow = document.getElementById('mouse-glow');
+
+        window.addEventListener('mousemove', (e) => {
+            // Move the dot instantly
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
             
-            document.querySelectorAll('.nav-links a[data-nav]').forEach(link => {
-                link.classList.remove('active');
-                if(link.getAttribute('data-nav') === pageId) link.classList.add('active');
+            // Move the large glow smoothly
+            glow.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 1000, fill: "forwards" });
+        });
+
+        // Hover effect for links
+        document.querySelectorAll('a, .card-3d').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(4)';
+                cursor.style.background = 'var(--accent)';
             });
-
-            document.getElementById('navLinks').classList.remove('open');
-            window.scrollTo(0, 0);
-            
-            // Re-trigger scroll animations for new page
-            setTimeout(initScrollAnimations, 100);
-        }
-
-        // 2. MOBILE MENU
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('open');
-        }
-
-        // 3. CUSTOM MAGNETIC CURSOR
-        if (window.matchMedia("(pointer: fine)").matches) {
-            const dot = document.querySelector('.cursor-dot');
-            const outline = document.querySelector('.cursor-outline');
-
-            window.addEventListener('mousemove', (e) => {
-                dot.style.left = e.clientX + 'px';
-                dot.style.top = e.clientY + 'px';
-                
-                outline.animate({
-                    left: `${e.clientX}px`,
-                    top: `${e.clientY}px`
-                }, { duration: 400, fill: "forwards" });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = '#fff';
             });
+        });
 
-            document.querySelectorAll('a, button, .bento-card, .work-card').forEach(el => {
-                el.addEventListener('mouseenter', () => outline.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => outline.classList.remove('hovering'));
+        // 2. MAGNETIC BUTTONS
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
-        }
-
-        // 4. SCROLL REVEAL ANIMATIONS
-        function initScrollAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.reveal').forEach(el => {
-                // Reset to animate again when switching pages
-                el.classList.remove('active'); 
-                observer.observe(el);
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
             });
-        }
+        });
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            initScrollAnimations();
+        // 3. GSAP SCROLL ANIMATIONS
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero entrance
+        gsap.from(".gsap-hero", {
+            y: 100,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: "power4.out",
+            delay: 0.2
+        });
+
+        // Scroll reveals
+        gsap.utils.toArray(".gsap-reveal").forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                y: 80,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
         });
     </script>
 </body>
