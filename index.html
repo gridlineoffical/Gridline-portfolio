@@ -3,380 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gridline | High-End Web Design</title>
+    <title>Gridline | Premium Web Design</title>
+    <meta name="description" content="Gridline engineers high-converting, premium websites for local service businesses. We don't just make things pretty—we make them profitable.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Reset & Variables */
+        /* CSS RESET & VARIABLES */
         :root {
-            --bg: #F7F7F7;
-            --text: #111827;
+            --bg: #07080A;
+            --surface: #111217;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
             --accent: #06B6D4;
-            --border: #E5E7EB;
-            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --border: rgba(255, 255, 255, 0.08);
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font-main);
-            line-height: 1.5;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            /* Creates the literal grid lines background */
-            background-image: 
-                linear-gradient(to right, var(--border) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--border) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center top;
+            cursor: none; /* Custom Cursor */
         }
+        a, button, input, textarea { cursor: none; }
+        h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; letter-spacing: -0.03em; }
+        a { text-decoration: none; color: inherit; }
 
-        /* Typography */
-        h1, h2, h3 {
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.1;
+        /* LAYOUT & UTILITIES */
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+        .section { padding: 100px 0; }
+        
+        /* SPA PAGE ROUTING */
+        .page { display: none; animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CUSTOM MAGNETIC CURSOR */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-
-        /* Utility Classes */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--accent); }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid var(--accent);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
+        .cursor-outline.hovering { width: 70px; height: 70px; background-color: rgba(6, 182, 212, 0.1); border-color: transparent; }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--text);
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 18px 36px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            border: 2px solid var(--text);
-        }
-
-        .btn:hover {
-            background-color: var(--accent);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(6, 182, 212, 0.2);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--text);
-            color: white;
-        }
-
-        /* Custom Logo (Pure CSS) */
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text);
-        }
-
-        .logo-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3px;
-            padding: 6px;
-            border: 2px solid var(--text);
-            border-radius: 8px;
-            position: relative;
-            background-color: var(--bg);
-        }
-
-        .logo-grid div {
-            width: 8px;
-            height: 8px;
-            background-color: var(--text);
-            border-radius: 1.5px;
-        }
-
-        .logo-dot {
-            position: absolute;
-            right: -7px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 14px;
-            height: 14px;
-            background-color: var(--accent);
-            border-radius: 50%;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -0.05em;
-        }
-
-        /* Navigation */
+        /* NAVIGATION */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(247, 247, 247, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(7, 8, 10, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
-            z-index: 100;
         }
+        nav .container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        
+        .logo { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.05em; }
+        .logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; padding: 5px; border: 2px solid var(--text-main); border-radius: 6px; position: relative; background: transparent; }
+        .logo-grid div { width: 6px; height: 6px; background: var(--text-main); border-radius: 1px; }
+        .logo-dot { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
 
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
+        .nav-links { display: flex; gap: 32px; align-items: center; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .nav-links a { position: relative; transition: color 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--text-main); color: var(--bg); padding: 16px 32px;
+            font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em;
+            border: none; border-radius: 4px; transition: all 0.3s;
         }
+        .btn:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 30px rgba(6, 182, 212, 0.4); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); box-shadow: none; }
 
-        .nav-links {
-            display: none;
-            gap: 32px;
+        /* HERO SECTION */
+        .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 80px; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 20%; left: 10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 60%); filter: blur(60px); z-index: -1; pointer-events: none; }
+        .hero-tag { display: inline-block; border: 1px solid var(--border); padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; color: var(--accent); background: rgba(6, 182, 212, 0.05); }
+        .hero h1 { font-size: clamp(3rem, 9vw, 7.5rem); font-weight: 800; margin-bottom: 24px; }
+        .hero p { font-size: clamp(1.1rem, 2vw, 1.3rem); max-width: 600px; color: var(--text-muted); margin-bottom: 48px; }
+
+        /* KINETIC MARQUEE */
+        .marquee-container { overflow: hidden; white-space: nowrap; padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
+        .marquee { display: inline-block; animation: marquee 20s linear infinite; font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        .marquee span { margin: 0 40px; color: var(--accent); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* BENTO GRID */
+        .bento-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .bento-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; transition: transform 0.4s, border-color 0.4s; position: relative; overflow: hidden; }
+        .bento-card:hover { transform: translateY(-4px); border-color: rgba(6, 182, 212, 0.4); }
+        
+        .bento-img { height: 280px; background: #1E293B; border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; color: white; position: relative; overflow: hidden; }
+        .bento-img.plumbing { background: linear-gradient(135deg, #1E3A8A, #0F172A); }
+        .bento-img.dental { background: linear-gradient(135deg, #0F766E, #0F172A); }
+        .bento-img::after { content: 'View Case Study'; position: absolute; inset: 0; background: rgba(6,182,212,0.8); color: var(--bg); display: flex; align-items: center; justify-content: center; font-weight: 700; opacity: 0; transition: opacity 0.3s; }
+        .bento-card:hover .bento-img::after { opacity: 1; }
+
+        .bento-meta { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--accent); letter-spacing: 0.05em; }
+        .bento-card h3 { font-size: 1.8rem; margin-bottom: 12px; }
+        .bento-card p { color: var(--text-muted); font-size: 1rem; }
+
+        /* FORMS */
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: var(--text-muted); }
+        .form-group input, .form-group textarea { width: 100%; padding: 16px; background: var(--surface); border: 1px solid var(--border); color: white; border-radius: 8px; font-family: var(--font-body); font-size: 16px; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+
+        /* FOOTER */
+        footer { border-top: 1px solid var(--border); padding: 80px 0 40px; background: var(--bg); }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-bottom: 80px; }
+        .footer-grid h2 { font-size: clamp(2.5rem, 6vw, 5rem); }
+        .footer-bottom { display: flex; flex-direction: column; gap: 20px; padding-top: 40px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 14px; }
+
+        /* MOBILE MENU */
+        .mobile-toggle { display: none; font-size: 28px; cursor: pointer; font-weight: bold; }
+        
+        @media (max-width: 768px) {
+            * { cursor: auto !important; }
+            .cursor-dot, .cursor-outline { display: none; }
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 80px; left: 0; width: 100%; background: var(--surface); padding: 24px; border-bottom: 1px solid var(--border); }
+            .footer-grid { grid-template-columns: 1fr; }
         }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 15px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 180px 0 100px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent);
-            margin-bottom: 24px;
-            background: white;
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 50px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 7.5rem);
-            margin-bottom: 32px;
-            background: white; /* Covers grid lines behind text for readability */
-            display: inline-block;
-            padding-right: 20px;
-        }
-
-        .hero p {
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            max-width: 600px;
-            color: #4B5563;
-            margin-bottom: 48px;
-            background: var(--bg);
-            padding: 10px 0;
-        }
-
-        /* Work Section */
-        .work {
-            padding: 100px 0;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 60px;
-            border-bottom: 2px solid var(--text);
-            padding-bottom: 20px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2rem, 5vw, 4rem);
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-
-        .project-card {
-            background: white;
-            border: 2px solid var(--text);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            transform: translate(-4px, -4px);
-            box-shadow: 12px 12px 0px var(--accent);
-        }
-
-        .project-image {
-            height: 300px;
-            border-bottom: 2px solid var(--text);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .project-image.plumbing {
-            background: #1E3A8A;
-            color: white;
-        }
-
-        .project-image.dental {
-            background: #0F766E;
-            color: white;
-        }
-
-        .project-image h3 {
-            font-size: 2.5rem;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .project-info {
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            flex-grow: 1;
-        }
-
-        .project-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.05em;
-            color: #6B7280;
-        }
-
-        .project-meta .result {
-            color: var(--accent);
-            background: rgba(6, 182, 212, 0.1);
-            padding: 4px 12px;
-            border-radius: 50px;
-            border: 1px solid rgba(6, 182, 212, 0.3);
-        }
-
-        .project-info p {
-            font-size: 1.1rem;
-            color: #4B5563;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--text);
-            color: white;
-            padding: 100px 0 40px;
-            border-top: 2px solid var(--text);
-        }
-
-        footer h2 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            margin-bottom: 40px;
-            letter-spacing: -0.03em;
-        }
-
-        footer .btn {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: var(--text);
-            font-size: 1.25rem;
-            padding: 24px 48px;
-        }
-
-        footer .btn:hover {
-            background: white;
-            border-color: white;
-        }
-
-        .footer-bottom {
-            margin-top: 100px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            color: #9CA3AF;
-            font-size: 14px;
-        }
-
-        /* Animations */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Media Queries */
         @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-            .project-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .footer-bottom {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
+            .bento-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; align-items: end; }
+            .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
     <!-- Navigation -->
     <nav>
         <div class="container">
-            <a href="#" class="logo-wrapper">
+            <a href="#" class="logo" onclick="navigate('home')">
                 <div class="logo-grid">
                     <div></div><div></div><div></div><div></div>
                     <div></div><div></div><div></div><div></div>
@@ -384,108 +161,189 @@
                     <div></div><div></div><div></div><div></div>
                     <div class="logo-dot"></div>
                 </div>
-                <span class="logo-text">Gridline</span>
+                Gridline
             </a>
-            <div class="nav-links">
-                <a href="#work">Work</a>
-                <a href="#process">Process</a>
+            <div class="mobile-toggle" onclick="toggleMenu()">☰</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#" onclick="navigate('home')" data-nav="home" class="active">Home</a>
+                <a href="#" onclick="navigate('work')" data-nav="work">Work</a>
+                <a href="#" onclick="navigate('contact')" data-nav="contact">Contact</a>
+                <a href="#" onclick="navigate('contact')" class="btn" style="padding: 12px 24px; color: var(--bg);">Start a Project</a>
             </div>
-            <a href="mailto:gridlineoffical@gmail.com" class="btn" style="padding: 12px 24px; font-size: 14px;">Start a Project</a>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero container">
-        <div class="fade-up">
-            <span class="hero-tag">Premium Local Web Design</span>
-            <h1>We build<br>websites that<br><span style="color: var(--accent);">dominate.</span></h1>
-            <p>Gridline engineers high-converting digital experiences for local businesses. We don't just make things pretty—we make them profitable.</p>
-            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                <a href="mailto:gridlineoffical@gmail.com" class="btn">Get a Free Mockup</a>
-                <a href="#work" class="btn btn-outline">See the Work</a>
-            </div>
-        </div>
-    </section>
+    <!-- MAIN APP -->
+    <main>
 
-    <!-- Work Section -->
-    <section id="work" class="work">
-        <div class="container">
-            <div class="section-header fade-up">
-                <h2>Selected Work</h2>
-                <span style="font-weight: 700; color: #6B7280;">2024 — Present</span>
+        <!-- PAGE: HOME -->
+        <section id="page-home" class="page active">
+            <div class="hero container">
+                <div>
+                    <span class="hero-tag">✦ Premium Web Design Agency</span>
+                    <h1>We build<br>websites that<br><span style="color: var(--accent);">print money.</span></h1>
+                    <p>Gridline engineers high-converting digital experiences for local businesses. We don't just make things pretty—we make them profitable.</p>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <a href="#" onclick="navigate('work')" class="btn">See the Work</a>
+                        <a href="#" onclick="navigate('contact')" class="btn btn-outline">Get a Free Mockup</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="project-grid">
-                <!-- Project 1 -->
-                <a href="#" target="_blank" class="project-card fade-up">
-                    <div class="project-image plumbing">
+            <!-- Marquee -->
+            <div class="marquee-container">
+                <div class="marquee">
+                    <span>HIGH CONVERSION</span> • <span>MOBILE FIRST</span> • <span>LIGHTNING FAST</span> • 
+                    <span>HIGH CONVERSION</span> • <span>MOBILE FIRST</span> • <span>LIGHTNING FAST</span> •
+                    <span>HIGH CONVERSION</span> • <span>MOBILE FIRST</span> • <span>LIGHTNING FAST</span> •
+                    <span>HIGH CONVERSION</span> • <span>MOBILE FIRST</span> • <span>LIGHTNING FAST</span> •
+                </div>
+            </div>
+
+            <!-- Value Prop -->
+            <div class="section container">
+                <h2 style="font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 40px;">Why Gridline?</h2>
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 16px;">⚡</div>
+                        <h3>Zero Risk. Free Mockups.</h3>
+                        <p>We build your mockup before you pay a dime. You only move forward if you love the design. No deposits, no contracts, no BS.</p>
+                    </div>
+                    <div class="bento-card">
+                        <div style="font-size: 2.5rem; margin-bottom: 16px;">📈</div>
+                        <h3>Built to Convert.</h3>
+                        <p>53% of mobile users leave if a site takes over 3 seconds to load. Our sites load instantly, keeping customers on your page and calling your phone.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: WORK -->
+        <section id="page-work" class="page">
+            <div class="section container" style="padding-top: 160px;">
+                <h2 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 40px;">Selected Work.</h2>
+                <div class="bento-grid">
+                    
+                    <!-- Case Study 1 -->
+                    <div class="bento-card">
+                        <div class="bento-img plumbing">Apex Plumbing</div>
+                        <div class="bento-meta"><span>Local Service</span><span>+214% Calls</span></div>
                         <h3>Apex Plumbing</h3>
+                        <p>A high-urgency, mobile-first design focused entirely on click-to-call functionality and local SEO dominance.</p>
                     </div>
-                    <div class="project-info">
-                        <div class="project-meta">
-                            <span>Local Service / Web Design</span>
-                            <span class="result">+214% Calls</span>
-                        </div>
-                        <p>An aggressive, mobile-first landing page engineered specifically to capture emergency plumbing calls 24/7.</p>
+                    
+                    <!-- Case Study 2 -->
+                    <div class="bento-card">
+                        <div class="bento-img dental">Bright Smile</div>
+                        <div class="bento-meta"><span>Healthcare</span><span>+180% Bookings</span></div>
+                        <h3>Bright Smile Dental</h3>
+                        <p>A clean, trust-building layout with an integrated booking system that reduced phone-call friction.</p>
                     </div>
-                </a>
-
-                <!-- Project 2 -->
-                <a href="#" target="_blank" class="project-card fade-up">
-                    <div class="project-image dental">
-                        <h3>Bright Smile</h3>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-meta">
-                            <span>Healthcare / Booking System</span>
-                            <span class="result">+180% Bookings</span>
-                        </div>
-                        <p>A clean, trust-focused site with a seamless appointment booking integration to reduce receptionist workload.</p>
-                    </div>
-                </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- PAGE: CONTACT -->
+        <section id="page-contact" class="page">
+            <div class="section container" style="padding-top: 160px;">
+                <div class="footer-grid">
+                    <div>
+                        <h2 style="font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 24px;">Let's Talk.</h2>
+                        <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 32px;">Send us a message and we'll get back to you with a free mockup concept for your business. No strings attached.</p>
+                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Direct Email:</p>
+                        <a href="mailto:gridlineoffical@gmail.com" style="color: var(--accent); font-size: 1.2rem; font-weight: 600;">gridlineoffical@gmail.com</a>
+                    </div>
+                    
+                    <form action="mailto:gridlineoffical@gmail.com" method="post" enctype="text/plain" style="background: var(--surface); padding: 40px; border-radius: 16px; border: 1px solid var(--border);">
+                        <div class="form-group">
+                            <label>Business Name</label>
+                            <input type="text" name="Business" placeholder="e.g. Apex Plumbing" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Email</label>
+                            <input type="email" name="Email" placeholder="you@business.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>What do you need?</label>
+                            <textarea rows="4" name="Message" placeholder="Tell us about your current site..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%;">Send Message &rarr;</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
     <footer>
-        <div class="container fade-up">
-            <h2>Ready to upgrade<br>your business?</h2>
-            <a href="mailto:gridlineoffical@gmail.com" class="btn">Let's Talk &rarr;</a>
-            
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h2 style="margin-bottom: 24px;">Ready to upgrade?</h2>
+                    <a href="#" onclick="navigate('contact')" class="btn">Start a Project</a>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <a href="#" class="logo-wrapper" style="color: white;">
+                <a href="#" onclick="navigate('home')" class="logo" style="color: white;">
                     <div class="logo-grid" style="border-color: white;">
-                        <div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div>
-                        <div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div>
-                        <div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div>
-                        <div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div><div style="background-color: white;"></div>
+                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
+                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
+                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
+                        <div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div><div style="background: white;"></div>
                         <div class="logo-dot"></div>
                     </div>
-                    <span class="logo-text">Gridline</span>
+                    Gridline
                 </a>
                 <p>&copy; 2024 Gridline. All rights reserved.</p>
-                <a href="mailto:gridlineoffical@gmail.com" style="color: white; text-decoration: none;">gridlineoffical@gmail.com</a>
             </div>
         </div>
     </footer>
 
-    <!-- Scroll Animation Script -->
+    <!-- JAVASCRIPT -->
     <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+        // 1. PAGE ROUTING (SPA)
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active');
+            
+            // Update Nav States
+            document.querySelectorAll('.nav-links a[data-nav]').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('data-nav') === pageId) link.classList.add('active');
             });
-        }, {
-            threshold: 0.1
-        });
 
-        document.querySelectorAll('.fade-up').forEach((el) => {
-            observer.observe(el);
-        });
+            // Close Mobile Menu
+            document.getElementById('navLinks').classList.remove('open');
+            window.scrollTo(0, 0);
+        }
+
+        // 2. MOBILE MENU
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+
+        // 3. CUSTOM MAGNETIC CURSOR
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const dot = document.querySelector('.cursor-dot');
+            const outline = document.querySelector('.cursor-outline');
+
+            window.addEventListener('mousemove', (e) => {
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+                
+                outline.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+
+            document.querySelectorAll('a, button, .bento-card').forEach(el => {
+                el.addEventListener('mouseenter', () => outline.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => outline.classList.remove('hovering'));
+            });
+        }
     </script>
-
 </body>
 </html>
